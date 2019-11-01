@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+</head>
+<body>
+<h2>CLIP STUDIO用 Karabiner-Elements テンキーパッド設定ファイル生成ツール</h2>
+<ol>
+  <li>Karabiner-Elementをインストール https://pqrs.org/osx/karabiner/
+  <li>テンキーパッドを接続
+  <li>Karabiner-Elements → Preferences → DeviceタブでテンキーパッドのVendorID,ProductIDを確認し、以下に入力
+  <li>各キーに割り当てたい操作を選ぶ
+  <li>Karabiner-Elementsにインポートボタンを押して、追加された設定をEnableにする
+</ol>
+<div id="app">
+  <table>
+    <tr><td>vendor_id</td><td><input type="number" v-model="vendorId"></td></tr>
+    <tr><td>product_id</td><td><input type="number" v-model="productId"></td></tr>
+    <tr v-for="(v, k) in mappings" border="1">
+      <td>{{ k }}</td>
+      <td>
+        <select v-model="mappings[k]">
+          <option value="-1"></option>
+          <option v-bind:value="idx" v-for="(opt, idx) in options">{{opt.title}}</option>
+        </select>
+      </td>
+    </tr>
+  </table>
+  <button @click="importJson()">Karabiner-Elementにインポート</button>
+  <!-- button @click="copyJson()">クリップボードにコピー</button -->
+  <!-- button @click="downloadJson()">ファイルとしてダウンロード</button -->
+  <button @click="persist()">ローカルストレージに記憶</button>
+  <pre v-html="configJson"></pre>
+</div>
+<script src="./app.js"></script>
+</body>
+</html>
